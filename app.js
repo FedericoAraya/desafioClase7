@@ -3,13 +3,17 @@ const app = express()
 const ProductManager = require('./productManager');
 const productManager = new ProductManager()
 
-app.get('/products', (req, res) => {
+app.get('/products',async(req, res) => {
+    try{
     let limit = parseInt(req.query.limit)
     let result = productManager.getProducts()
     if (!isNaN(limit)) {
       result = result.slice(0, limit)
     }
     res.json(result)
+}catch{
+    res.status(404).send('No se encontraron los productos')
+}
   });
 
   app.get('/products/:id', (req, res) => {
